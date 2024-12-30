@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,129 +15,146 @@
     /* #quote-box {
     color: red
     } */
-    body{
-        font-family: 'Raleway', sans-serif;
-        font-weight: 400;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
+    body {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 400;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
 
     .buttons {
-    height: 30px;
-    width: 40px;
-    border-radius: 5px;
-    color: #fff;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    margin-right: 10px;
+      height: 30px;
+      width: 40px;
+      border-radius: 5px;
+      color: #fff;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 10px;
     }
   </style>
 </head>
+
 <body>
 
   <div id="root"></div>
   <script type="text/babel">
     const quoteApi = "https://api.quotable.io/quotes/random"
 
-class Wrapper extends React.Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      quote: '',
-      author: ''
-    }
-    this.nextQuote = this.nextQuote.bind(this)
-  }
-  async nextQuote() {
-    const url = "https://qapi.vercel.app/api/random";
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
+    class Wrapper extends React.Component {
+      constructor(props) {
+        super(props)
+        this.state = {
+          quote: '',
+          author: ''
+        }
+        this.nextQuote = this.nextQuote.bind(this)
       }
-      const json = await response.json();
-      this.setState({
-        quote: json.quote,
-        author: json.author,
-      });
-    } catch (error) {
-      console.log("error fix")
-      console.error(error.message);
-      this.setState({
-        quote: "Error fetching quote. Please try again later.",
-        author: "Me",
-      });
+      async nextQuote() {
+        const url = "https://qapi.vercel.app/api/random";
+        try {
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+          }
+          const json = await response.json();
+          this.setState({
+            quote: json.quote,
+            author: json.author,
+          });
+        } catch (error) {
+          console.log("error fix")
+          console.error(error.message);
+          this.setState({
+            quote: "Error fetching quote. Please try again later.",
+            author: "Me",
+          });
+        }
+      }
+      componentDidMount() {
+        this.nextQuote();
+      }
+      render() {
+        return (
+          <div id="quote-box" className="rounded-1 p-4 mx-auto d-table bg-light shadow" style={{ width: "550px" }}>
+            {/* Quote Text */}
+            <div className="quote-text text-center" style={{ opacity: 1, width: "450px", margin: "0 auto" }}>
+              <i className="fa fa-quote-left" style={{ fontSize: "1.75em", marginRight: "10px" }}>
+
+              </i>
+              <span id="text" className="text-center" style={{ fontSize: "1.75em" }}>
+                {this.state.quote}
+              </span>
+            </div>
+            {/* Quote Author */}
+            <div className="quote-author text-end mt-3" style={{ opacity: 1, width: "450px", margin: "0 auto" }}>
+              - <span id="author">    {this.state.author}
+              </span>
+            </div>
+            {/* Quote Buttons */}
+            <div
+              className="buttons d-flex align-items-center justify-content-start mt-4"
+              style={{ opacity: 1, width: "450px", margin: "0 auto" }}
+            >
+              {/* Group Twitter and Tumblr Buttons */}
+              <div className="d-flex">
+                <a
+                  id="tweet-quote" href="twitter.com/intent/tweet" target="_blank" className="btn d-flex justify-content-center align-items-center me-2"
+                  style={{
+                    height: "40px", width: "50px", backgroundColor: "#3b5998", color: "#fff", borderRadius: "5px",
+                  }}
+                >
+                  <i className="fa-brands fa-twitter"></i>
+                </a>
+                <a
+                  href="twitter.com/intent/tweet" target="_blank" className="btn d-flex justify-content-center align-items-center"
+                  style={{
+                    height: "40px", width: "50px", backgroundColor: "#35465c", borderRadius: "5px", color: "#fff"
+                  }}
+                >
+                  <i className="fa-brands fa-tumblr"></i>
+                </a>
+              </div>
+
+              {/* New Quote Button */}
+              <button
+                id="new-quote" className="btn btn-dark ms-auto"
+                style={{
+                  height: "40px", padding: "0 15px",
+                }}
+                onClick={this.nextQuote}
+              >
+                New quote
+              </button>
+            </div>
+          </div>
+        );
+      }
     }
-  }
-  componentDidMount() {
-    this.nextQuote();
-  }
-  render() {
-    return (
-      <div id="quote-box" className="rounded-1 p-4 mx-auto d-table bg-light shadow" style ={{width: "550px"}}>
-       {/* Quote Text */}
-       <div className="quote-text text-center" style={{ opacity: 1, width: "450px",margin: "0 auto"}}>
-         <i className="fa fa-quote-left" style={{fontSize: "1.75em",marginRight: "10px"}}>
 
-         </i>
-         <span id="text" className="text-center" style={{fontSize: "1.75em"}}>
-           {this.state.quote}
-         </span>
-       </div>
-       {/* Quote Author */}
-       <div className="quote-author text-end mt-3" style={{ opacity: 1, width: "450px",margin: "0 auto" }}>
-         - <span id="author">    {this.state.author}
-</span>
-       </div>
-       {/* Quote Buttons */}
-       <div
-         className="buttons d-flex align-items-center justify-content-start mt-4"
-         style={{ opacity: 1, width: "450px", margin: "0 auto" }}
-       >
-      {/* Group Twitter and Tumblr Buttons */}
-        <div className="d-flex">
-          <a
-            id="tweet-quote" href="twitter.com/intent/tweet" target="_blank" className="btn d-flex justify-content-center align-items-center me-2"
-            style={{
-              height: "40px",width: "50px",backgroundColor: "#3b5998",color: "#fff",borderRadius: "5px",
-            }}
-          >
-          <i className="fa-brands fa-twitter"></i>
-          </a>
-          <a
-             href="twitter.com/intent/tweet" target="_blank" className="btn d-flex justify-content-center align-items-center"
-            style={{
-              height: "40px",width: "50px",backgroundColor: "#35465c", borderRadius: "5px", color: "#fff"
-            }}
-          >
-            <i className="fa-brands fa-tumblr"></i>
-          </a>
-        </div>
-
-        {/* New Quote Button */}
-        <button
-          id="new-quote" className="btn btn-dark ms-auto"
-          style={{
-            height: "40px",padding: "0 15px",
-          }}
-          onClick={this.nextQuote}
-        >
-          New quote
-        </button>
-        </div>
-      </div>
+    // Render the React component
+    ReactDOM.render(
+      <Wrapper />,
+      document.getElementById('root')
     );
-  }
-}
-
-// Render the React component
-ReactDOM.render(
-  <Wrapper />,
-  document.getElementById('root')
-);
   </script>
+
+  <div id="bottom-right-link" style="
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          background-color: #000;
+          color: #fff;
+          padding: 10px 15px;
+          border-radius: 5px;
+          font-size: 14px;
+          ">
+    <a href="https://sites.google.com/view/practiceprojects/home" target="_blank" style="color: #fff; text-decoration: none;">
+      Additional projects ->
+    </a>
+  </div>
 </body>
+
 </html>
